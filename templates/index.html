@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tickets API</title>
+</head>
+<body>
+<h1>You have to be logged in</h1>
+Documentation:
+<br>
+<a href="{% url 'schema-redoc' %}">Redoc</a>
+<br><a href="{% url 'schema-swagger-ui' %}">Swagger</a>
+
+<ul>
+    <h2> Events</h2>
+    <li>
+        <a href="{% url "tickets:event-create" %}">Create event</a>
+    </li>
+    <li>
+        <a href="{% url "tickets:events-list" %}">List of active events</a>
+    </li>
+    {% if event %}
+        <li>
+            <a href="{% url "tickets:event-detail" event.id %}">Detail event with list of reserved, available
+                tickets</a>
+        </li>
+    {% else %}
+        Please create active event
+    {% endif %}
+    <h2>Tickets</h2>
+    <li>
+        <a href="{% url "tickets:user-tickets-list" %}">User's tickets with filtering on paid, disabled, reserved and
+            ticket type</a>
+    </li>
+    <li>
+        <a href="{% url "tickets:ticket-create" %}">Create ticket</a>
+    </li>
+    {% if ticket %}
+        <li>
+            <a href="{% url "tickets:ticket-detail" ticket.id %}">Detail info about ticket</a>
+        </li>
+    {% else %}
+        Please create first ticket
+    {% endif %}
+    <h2>Payment</h2>
+    <li><a href="{% url 'tickets:payment-create' %}">Make payment</a></li>
+    <h2>Statistics</h2>
+    {% if event %}
+        <li>
+            <a href="{% url "tickets:event-detail" event.id %}">Get a summary amount of reserved tickets for each
+                event</a>
+        </li>
+    {% else %}
+        Please create acitve event
+    {% endif %}
+    <li><a href="{% url "tickets:ticket-statistic" %}">Statistic, set <b>ticket_type</b> for correct info</a></li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
+        language_version: python3
+        args: [
+            "--line-length=119"
+        ]
+  - repo: https://github.com/humitos/mirrors-autoflake
+    rev: v1.1
+    hooks:
+      - id: autoflake
+        args: [ '--in-place', '--remove-all-unused-imports', '--remove-unused-variable' ]
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.9
+    hooks:
+      - id: flake8
+        exclude: ^migrations/
+        args: [
+            "--ignore=E203,W503",
+            "--max-line-length=119",
+            "--exclude=*migrations*",
+        ]

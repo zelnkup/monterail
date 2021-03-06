@@ -1,0 +1,42 @@
+version: '3.7'
+
+volumes:
+  db:
+  redis:
+  celery:
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=tickets
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  web:
+    build: .
+    command: bash -c "python3 manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - celery
+  redis:
+    image: redis:6.0.6-alpine
+    volumes:
+      - redis/:/data
+    command: redis-server
+    ports:
+      - 6379
+  celery:
+    build: ./
+    volumes:
+      - ./:/app
+      - /tmp/hq-backend:/tmp
+    depends_on:
+      - db
+      - redis
+    command: bash -c "python3 manage.py migrate && celery -A config worker -l info"
+    env_file: .env
