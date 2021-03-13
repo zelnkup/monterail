@@ -18,8 +18,6 @@ class PaymentGateway:
     supported_currencies = ["EUR"]
 
     def charge(self, instance: Ticket, token: str, currency: str, amount: int) -> Union[Ticket, BillingException]:
-        print(instance.reservation_expired_at, timezone.now())
-
         if compare_digest(token, "card_error"):
             raise CardError("Your card has been declined")
         elif compare_digest(token, "payment_error"):
